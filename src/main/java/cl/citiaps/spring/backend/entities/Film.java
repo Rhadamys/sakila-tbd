@@ -3,6 +3,8 @@ package cl.citiaps.spring.backend.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,13 +56,11 @@ public class Film implements Serializable {
 	private Timestamp lastUpdate;
 	
 	@ManyToMany
-	@JoinTable(name="film_actor",
-		joinColumns=
-			@JoinColumn(name="film_id"),
-		inverseJoinColumns=
-			@JoinColumn(name="actor_id")
-	)
-	private Set<Actor> actors;
+	@JoinTable(name = "Film_Actor",
+			   joinColumns = @JoinColumn(name = "film_id"),
+			   inverseJoinColumns = @JoinColumn(name="actor_id"))
+	@JsonIgnore
+	private Set <Actor> actors;
 
 	public Film() {
 	}
