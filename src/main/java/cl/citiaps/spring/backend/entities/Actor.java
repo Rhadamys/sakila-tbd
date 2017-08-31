@@ -2,6 +2,9 @@ package cl.citiaps.spring.backend.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -28,6 +31,10 @@ public class Actor implements Serializable {
 
 	@Column(name="last_update", nullable=false)
 	private Timestamp lastUpdate;
+	
+	@ManyToMany(mappedBy = "actors")
+	
+	private Set <Film> films;
 
 	public Actor() {
 	}
