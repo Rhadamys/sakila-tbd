@@ -2,6 +2,7 @@ package cl.citiaps.spring.backend.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,6 +52,15 @@ public class Film implements Serializable {
 	
 	@Column(name="last_update", nullable=false)
 	private Timestamp lastUpdate;
+	
+	@ManyToMany
+	@JoinTable(name="film_actor",
+		joinColumns=
+			@JoinColumn(name="film_id"),
+		inverseJoinColumns=
+			@JoinColumn(name="actor_id")
+	)
+	private Set<Actor> actors;
 
 	public Film() {
 	}
@@ -149,5 +159,13 @@ public class Film implements Serializable {
 
 	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
+	}
+
+	public Set<Actor> getActors() {
+		return actors;
+	}
+
+	public void setActors(Set<Actor> actors) {
+		this.actors = actors;
 	}
 }
