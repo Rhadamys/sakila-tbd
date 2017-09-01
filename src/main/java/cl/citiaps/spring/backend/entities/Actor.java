@@ -32,7 +32,9 @@ public class Actor implements Serializable {
 	@Column(name="last_update", nullable=false)
 	private Timestamp lastUpdate;
 	
-	@ManyToMany(mappedBy="actors")
+	@ManyToMany(
+			mappedBy="actors",
+			cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Film> films;
 
@@ -75,7 +77,7 @@ public class Actor implements Serializable {
 		return films;
 	}
 
-	public void setFilms(Set<Film> films) {
-		this.films = films;
+	public void addFilm(Film film) {
+		this.films.add(film);
 	}
 }

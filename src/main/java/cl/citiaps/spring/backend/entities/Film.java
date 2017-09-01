@@ -55,7 +55,7 @@ public class Film implements Serializable {
 	@Column(name="last_update", nullable=false)
 	private Timestamp lastUpdate;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "Film_Actor",
 			   joinColumns = @JoinColumn(name = "film_id"),
 			   inverseJoinColumns = @JoinColumn(name="actor_id"))
