@@ -23,10 +23,10 @@ public class ActorService {
 	
 	@Autowired
 	private ActorRepository actorRepository;
-
+	
 	@Autowired
 	private FilmRepository filmRepository;
-
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public Iterable<Actor> getAllUsers() {
@@ -55,14 +55,15 @@ public class ActorService {
 			@PathVariable("filmId") Integer filmId) {
 		Actor actor = actorRepository.findOne(actorId);
 
-		Set<Film> actorFilms = actor.getFilms();
-		
-		for(Film actorFilm: actorFilms) {
+		for(Film actorFilm: actor.getFilms()) {
 			if(actorFilm.getFilmId() == filmId)
-				return null;
+				return actor.getFilms();
 		}
 
-		actor.addFilm(filmRepository.findOne(filmId));
+		Film film = filmRepository.findOne(filmId);
+		actor.addFilm(film);
+		film.addActor(actor);
+		filmRepository.save(film);
 		return actorRepository.save(actor).getFilms();
 	}
 	
