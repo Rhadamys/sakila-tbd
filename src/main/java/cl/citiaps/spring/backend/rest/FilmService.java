@@ -41,7 +41,6 @@ public class FilmService {
 		return filmRepository.findOne(id).getActors();
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
