@@ -2,6 +2,8 @@ package cl.citiaps.spring.backend.rest;
 
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,22 +50,34 @@ public class ActorService {
 	@RequestMapping(
 			value = "/{actorId}/films/{filmId}", 
 			method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public Set<Film> addFilm(
 			@PathVariable("actorId") Integer actorId, 
-			@PathVariable("filmId") Integer filmId) {
+			@PathVariable("filmId") Integer filmId,
+			HttpServletResponse httpResponse) {
+		if(!actorRepository.exists(actorId)) {
+			httpResponse.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
 		Actor actor = actorRepository.findOne(actorId);
 
 		for(Film actorFilm: actor.getFilms()) {
-			if(actorFilm.getFilmId() == filmId)
-				return actor.getFilms();
+			if(actorFilm.getFilmId() == filmId) {
+				httpResponse.setStatus(HttpStatus.NOT_MODIFIED.value());
+				return null;
+			}
 		}
 
+		if(!filmRepository.exists(filmId)) {
+			httpResponse.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		}
 		Film film = filmRepository.findOne(filmId);
+		
 		actor.addFilm(film);
 		film.addActor(actor);
 		filmRepository.save(film);
+		httpResponse.setStatus(HttpStatus.CREATED.value());
 		return actorRepository.save(actor).getFilms();
 	}
 	
