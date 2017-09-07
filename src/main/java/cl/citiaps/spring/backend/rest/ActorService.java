@@ -83,6 +83,7 @@ public class ActorService {
 		return actorRepository.save(actor).getFilms();
 	}
 	
+	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
